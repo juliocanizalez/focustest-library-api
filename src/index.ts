@@ -11,6 +11,7 @@ import { errorHandler, notFound } from './middlewares/error.middleware';
 // Routes
 import authRoutes from './routes/auth.routes';
 import userRoutes from './routes/user.routes';
+import bookRoutes from './routes/book.routes';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(morgan('dev'));
 // API Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/books', bookRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
