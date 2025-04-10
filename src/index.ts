@@ -6,9 +6,11 @@ import swaggerUi from 'swagger-ui-express';
 import connectDB from './config/database';
 import swaggerSpec from './config/swagger';
 import config from './config/config';
+import { errorHandler, notFound } from './middlewares/error.middleware';
 
 // Routes
 import authRoutes from './routes/auth.routes';
+import userRoutes from './routes/user.routes';
 
 const app = express();
 
@@ -23,12 +25,16 @@ app.use(morgan('dev'));
 
 // API Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = config.port;
 app.listen(PORT, () => {
