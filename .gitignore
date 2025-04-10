@@ -1,0 +1,26 @@
+# dependencies
+/node_modules
+
+# compiled output
+/dist
+
+# env files
+.env
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# IDE and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode/*
