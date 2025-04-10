@@ -8,8 +8,7 @@
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "seed": "ts-node src/utils/seedData.ts",
-    "create-admin": "ts-node src/utils/createAdminUser.ts"
+    "seed": "ts-node src/utils/seedData.ts"
   },
   "keywords": [],
   "author": "",
