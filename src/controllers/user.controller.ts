@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import User from '../models/User';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
@@ -91,6 +92,11 @@ export const createUser = async (
   }
 };
 
+/**
+ * Check if password is provided and if it is, update the user with the new password
+ * Otherwise, update the user without changing the password
+ * If password is provided, hash it
+ */
 export const updateUser = async (
   req: Request,
   res: Response,
@@ -98,11 +104,17 @@ export const updateUser = async (
   try {
     const { firstName, lastName, email, password, role } = req.body;
 
+    // Check if password is provided and if it is, hash it
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+
     const user = await User.findByIdAndUpdate(req.params.id, {
       firstName,
       lastName,
       email,
-      password,
+      password: hashedPassword,
       role,
     });
 
