@@ -1,7 +1,12 @@
 import { Router } from 'express';
-import { login, register } from '../controllers/auth.controller';
+import {
+  login,
+  register,
+  getAuthenticatedUser,
+} from '../controllers/auth.controller';
 import { loginValidation, registerValidation } from '../dto/auth.dto';
 import { validate } from '../middlewares/validation.middleware';
+import { authenticate } from '../middlewares/auth.middleware';
 
 const router = Router();
 
@@ -87,5 +92,30 @@ router.post('/login', loginValidation, validate, login);
  *         description: User already exists
  */
 router.post('/register', registerValidation, validate, register);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Get authenticated user data
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Authentication required
+ *       404:
+ *         description: User not found
+ */
+router.get('/me', authenticate, getAuthenticatedUser);
 
 export default router;
