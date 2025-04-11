@@ -4,6 +4,8 @@ import {
   getUserById,
   getCurrentUser,
   createUser,
+  updateUser,
+  deleteUser,
 } from '../controllers/user.controller';
 import { createUserValidation } from '../dto/user.dto';
 import { validate } from '../middlewares/validation.middleware';
@@ -140,5 +142,79 @@ router.post(
   validate,
   createUser,
 );
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Update user by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [student, librarian]
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Not authenticated
+ *       403:
+ *         description: Not authorized
+ *       404:
+ *         description: User not found
+ */
+router.put('/:id', authenticate, authorizeLibrarian, updateUser);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete user by ID
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       401:
+ *         description: Not authenticated
+ *       403:
+ *         description: Not authorized
+ *       404:
+ *         description: User not found
+ */
+router.delete('/:id', authenticate, authorizeLibrarian, deleteUser);
 
 export default router;
